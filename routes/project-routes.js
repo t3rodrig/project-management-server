@@ -46,4 +46,18 @@ router.get('/projects/:id', (req, res, next) => {
     .catch(err => res.json(err));
 });
 
+// PUT route => to update a specific project
+router.put('/projects/:id', (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
+
+  Project.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+      res.json({ message: `Project with ${req.params.id} is updated successfully.` });
+    })
+    .catch(err => res.json(err));
+});
+
 module.exports = router;
