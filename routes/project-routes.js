@@ -19,4 +19,14 @@ router.post('/projects', (req, res, next) => {
   .catch(err => res.json(err));
 });
 
+// GET route => to get all the projects
+router.get('/projects', (req, res, next) => {
+  Project.find()
+    .populate('task')
+    .then(response => {
+      res.json(response); // all the projects
+    })
+    .catch(err => res.json(err));
+});
+
 module.exports = router;
