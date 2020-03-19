@@ -53,8 +53,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES MIDDLEWARE STARTS HERE:
 
-const index = require('./routes/index');
-app.use('/', index);
+// const index = require('./routes/index');
+// app.use('/', index);
+
+app.use('/api', require('./routes/project-routes'));
+// app.use('/api', require('./routes/task-routes'));
 
 
 module.exports = app;
