@@ -6,9 +6,9 @@ const Project = require('../models/project-model');
 const Task = require('../models/task-model');
 
 // GET route => to retrieve a specific task
-router.get('/projects/:projectId/:taskId', (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.projectId)) {
-    res.status(400).json({ message: 'Specified projectId is not valid' });
+router.get('/tasks/:taskId', (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.taskId)) {
+    res.status(400).json({ message: 'Specified taskId is not valid' });
     return;
   }
 
