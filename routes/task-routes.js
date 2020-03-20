@@ -5,6 +5,27 @@ const router = express.Router();
 const Project = require('../models/project-model');
 const Task = require('../models/task-model');
 
+// mongoose.set('useFindAndModify', false);
+
+// POST route => to create a new task
+router.post('/tasks', (req, res, next) => {
+  const { title, description } = req.body;
+  Task.create({
+    title,
+    description,
+    project: req.body.projectId
+  })
+    .then(response => { // the new task
+      return Project.findByIdAndUpdate(req.body.projectId, {
+        $push: {tasks: response._id}
+      }, { new: true });
+    })
+    .then(response => {
+      res.json(response);
+    })
+    .catch(err => res.json(err));
+});
+
 // GET route => to retrieve a specific task
 router.get('/tasks/:taskId', (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.taskId)) {
@@ -14,24 +35,6 @@ router.get('/tasks/:taskId', (req, res, next) => {
 
   Task.findById(req.params.taskId)
     .then(response => { // a specific task
-      res.json(response);
-    })
-    .catch(err => res.json(err));
-});
-
-// POST route => to create a new task
-router.post('/tasks', (req, res, next) => {
-  Task.create({
-    title: req.body.title,
-    description: req.body.description,
-    project: req.body.projectId
-  })
-    .then(response => { // the new task
-      return Project.findByIdAndUpdate(req.body.projectId, {
-        $push: {tasks: response._id}
-      });
-    })
-    .then(response => {
       res.json(response);
     })
     .catch(err => res.json(err));
