@@ -51,4 +51,32 @@ authRoutes.post('/signup', (req, res, next) => {
     .catch(() => res.status(500).json({ message: "Username check went bad." }));
 });
 
+authRoutes.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, theUser, failureDetails) => {
+    if (err) {
+      res.status(500).json({ message: 'Something went wrong authenticating user' });
+      return;
+    }
+
+    if (!theUser) {
+      // "failureDetails" contains the error messages
+      // from our logic in "LocalStrategy".
+      res.status(401).json(failureDetails);
+      return;
+    }
+
+    // save user in session
+    req.login(theUser, err => {
+      if (err) {
+        res.status(500).json({ message: 'Session save went bad.' });
+        return;
+      }
+
+      // Send the user's information to the frontend
+      res.status(200).json(theUser);
+    });
+
+  })(req, res, next);
+});
+
 module.exports = authRoutes;
