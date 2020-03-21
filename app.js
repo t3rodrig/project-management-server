@@ -12,10 +12,10 @@ const cors         = require('cors');
 // INSTALL THESE DEPENDENCIES: passport-local, passport, bcryptjs, express-session
 // AND UN-COMMENT OUT FOLLOWING LINES:
 
-// const session       = require('express-session');
-// const passport      = require('passport');
+const session       = require('express-session');
+const passport      = require('passport');
 
-// require('./configs/passport');
+require('./configs/passport');
 
 // IF YOU STILL DIDN'T, GO TO 'configs/passport.js' AND UN-COMMENT OUT THE WHOLE FILE
 
@@ -44,9 +44,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ADD SESSION SETTINGS HERE:
+app.use(session({
+  secret: "some secret goes here",
+  resave: true,
+  saveUninitialized: true
+}));
 
 
 // USE passport.initialize() and passport.session() HERE:
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // ADD CORS SETTINGS HERE TO ALLOW CROSS-ORIGIN INTERACTION:
@@ -57,9 +64,7 @@ app.use(cors({
 
 // ROUTES MIDDLEWARE STARTS HERE:
 
-// const index = require('./routes/index');
-// app.use('/', index);
-
+app.use('/api', require('./routes/auth-routes'));
 app.use('/api', require('./routes/project-routes'));
 app.use('/api', require('./routes/task-routes'));
 
