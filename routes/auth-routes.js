@@ -36,11 +36,17 @@ authRoutes.post('/signup', (req, res, next) => {
       })
       .then(newUser => {
         // Automatically log in user after sign up
-        req.login(newUser)
-          .then(newUser => res.status(200).json(newUser))
-          .catch(() => res.status(500).json({ message: 'Login after signup went bad.' }));
+        req.login(newUser, err => {
+          if (err) {
+            res.status(500).json({ message: 'Login after signup went bad.' });
+            return;
+          }
+          // Send the user's information to the frontend
+          res.status(200).json(newUser);
+        });
       })
       .catch(() => res.status(400).json({ message: 'Saving user to database went wrong' }));
+
     })
     .catch(() => res.status(500).json({ message: "Username check went bad." }));
 });
