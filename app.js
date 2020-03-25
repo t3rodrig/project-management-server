@@ -39,10 +39,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Express setup
-
-app.use(express.static(path.join(__dirname, 'public')));
-
 // ADD SESSION SETTINGS HERE:
 app.use(session({
   secret: "some secret goes here",
