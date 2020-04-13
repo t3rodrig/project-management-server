@@ -61,7 +61,7 @@ app.use(cors({
 // ROUTES MIDDLEWARE STARTS HERE:
 
 app.use('/api', require('./routes/auth-routes'));
-app.use('/api', require('./routes/project-routes'));
+app.use('/api/projects', require('./routes/project-routes'));
 app.use('/api', require('./routes/task-routes'));
 
 
